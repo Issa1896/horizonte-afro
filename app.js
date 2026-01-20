@@ -1,9 +1,7 @@
-// Ano no rodapé
 document.addEventListener("DOMContentLoaded", () => {
   const year = document.getElementById("year");
   if (year) year.textContent = new Date().getFullYear();
 
-  // Suavizar scroll para âncoras
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener("click", (e) => {
       const id = a.getAttribute("href");
@@ -14,46 +12,56 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Se ainda não existe /login, evita 404 (MVP honesto)
   const loginLink = document.getElementById("loginLink");
   if (loginLink) {
     loginLink.addEventListener("click", (e) => {
-      // Quando sua rota /login existir, mude para true
-      const loginEnabled = false;
-
-      if (!loginEnabled) {
-        e.preventDefault();
-        alert("Login ainda não está disponível no MVP público. Entre na lista de espera para o piloto.");
-        const sec = document.querySelector("#inscricao");
-        if (sec) sec.scrollIntoView({ behavior: "smooth" });
-      }
+      e.preventDefault();
+      alert("Login ainda não está disponível no MVP público. Entre na lista de espera para o piloto.");
+      document.querySelector("#inscricao")?.scrollIntoView({ behavior: "smooth" });
     });
   }
 
-  // Form “fake” (simulação). No backend, você troca por POST real.
+  const GOOGLE_FORM_BASE_URL =
+    "https://docs.google.com/forms/d/e/1FAIpQLSdZMJjvLbsqj9n_QcaF35bkEsDPBx12vbf383bY80-1qYEXkQ/viewform";
+
+  const ENTRY = {
+    nome: "entry.2141837322",
+    email: "entry.753412924",
+    perfil: "entry.1245015387",
+    cidade: "entry.1470869443",
+    mensagem: "entry.1755395265"
+  };
+
   const form = document.getElementById("leadForm");
   const msg = document.getElementById("formMsg");
+
+  function buildPrefillUrl(data) {
+    const url = new URL(GOOGLE_FORM_BASE_URL);
+    url.searchParams.set("usp", "pp_url");
+    url.searchParams.set(ENTRY.nome, data.nome || "");
+    url.searchParams.set(ENTRY.email, data.email || "");
+    url.searchParams.set(ENTRY.perfil, data.perfil || "");
+    url.searchParams.set(ENTRY.cidade, data.cidade || "");
+    url.searchParams.set(ENTRY.mensagem, data.mensagem || "");
+    return url.toString();
+  }
 
   if (form) {
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-
       const data = Object.fromEntries(new FormData(form).entries());
-      if (msg) msg.textContent = "Enviando...";
 
-      // Simulação de envio (troque por fetch para seu endpoint)
-      await new Promise(r => setTimeout(r, 650));
+      if (!data.nome || !data.email || !data.perfil) {
+        if (msg) msg.textContent = "Preencha nome, e-mail e perfil.";
+        return;
+      }
 
-      // Aqui você poderia fazer:
-      // fetch("/api/leads/", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(data)
-      // });
+      if (msg) msg.textContent = "Abrindo o Google Form com seus dados preenchidos...";
+      await new Promise(r => setTimeout(r, 300));
 
-      console.log("Lead capturado (simulado):", data);
+      window.open(buildPrefillUrl(data), "_blank", "noopener,noreferrer");
 
-      if (msg) msg.textContent = "Recebido. Você entrou na lista de espera do piloto.";
+      if (msg) msg.textContent = "Finalize o envio no Google Form que abriu na nova aba.";
       form.reset();
     });
   }
