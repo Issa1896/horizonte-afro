@@ -1,10 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const year = document.getElementById("year");
-  if (year) year.textContent = new Date().getFullYear();
+  console.log("APP JS CARREGOU ✅");
 
-  // =========================
-  // FORM 1 — B2G (prefill completo)
-  // =========================
+  // ===== FORM 1 (B2G) =====
   const B2G_FORM_VIEW_URL =
     "https://docs.google.com/forms/d/e/1FAIpQLSf568b_tzt5jsOCEglAr_fnhPVIDeVOG6Fuy-l1i1E_t_M42w/viewform";
 
@@ -19,13 +16,15 @@ document.addEventListener("DOMContentLoaded", () => {
     whats: "entry.818163933",
     dor: "entry.962060619",
     piloto: "entry.498836888",
-    prioridade: "entry.442180220", // checkbox
-    pagamento: "entry.1005602",    // checkbox
+    prioridade: "entry.442180220",
+    pagamento: "entry.1005602",
     reuniao: "entry.329198512"
   };
 
   const validationForm = document.getElementById("validationForm");
   const formMsg = document.getElementById("formMsg");
+
+  console.log("validationForm existe?", !!validationForm);
 
   function appendMany(params, key, value) {
     if (value == null) return;
@@ -35,8 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     const s = String(value).trim();
     if (!s) return;
-    if (s.includes(",")) s.split(",").map(x => x.trim()).filter(Boolean).forEach(v => params.append(key, v));
-    else params.append(key, s);
+    params.append(key, s);
   }
 
   function buildB2GUrl(data) {
@@ -56,15 +54,16 @@ document.addEventListener("DOMContentLoaded", () => {
     appendMany(url.searchParams, B2G_ENTRY.reuniao, data.reuniao);
 
     // checkboxes
-    appendMany(url.searchParams, B2G_ENTRY.prioridade, data.prioridade);
-    appendMany(url.searchParams, B2G_ENTRY.pagamento, data.pagamento);
+    (data.prioridade || []).forEach(v => url.searchParams.append(B2G_ENTRY.prioridade, v));
+    (data.pagamento || []).forEach(v => url.searchParams.append(B2G_ENTRY.pagamento, v));
 
     return url.toString();
   }
 
   if (validationForm) {
-    validationForm.addEventListener("submit", async (e) => {
+    validationForm.addEventListener("submit", (e) => {
       e.preventDefault();
+      console.log("SUBMIT B2G DISPAROU ✅");
 
       const raw = Object.fromEntries(new FormData(validationForm).entries());
       const prioridadeChecks = [...validationForm.querySelectorAll('input[name="prioridade"]:checked')].map(i => i.value);
@@ -72,39 +71,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const data = {
         ...raw,
-        prioridade: prioridadeChecks.length ? prioridadeChecks : raw.prioridade,
-        pagamento: pagamentoChecks.length ? pagamentoChecks : raw.pagamento
+        prioridade: prioridadeChecks,
+        pagamento: pagamentoChecks
       };
 
-      const required = ["nome", "email", "orgao", "cargo", "uf", "municipio", "dor", "piloto", "reuniao"];
-      const missing = required.filter(k => !data[k] || String(data[k]).trim() === "");
-      if (missing.length) {
-        if (formMsg) formMsg.textContent = "Preencha os campos obrigatórios antes de enviar.";
-        return;
-      }
+      const url = buildB2GUrl(data);
+      console.log("URL B2G:", url);
+      alert("Vou abrir este link:\n\n" + url);
 
-      if (formMsg) formMsg.textContent = "Abrindo Google Form (B2G) com respostas pré-preenchidas...";
-      await new Promise(r => setTimeout(r, 120));
-
-      window.open(buildB2GUrl(data), "_blank", "noopener,noreferrer");
-
-      if (formMsg) formMsg.textContent = "Finalize o envio no Google Form que abriu na nova aba.";
-      validationForm.reset();
+      if (formMsg) formMsg.textContent = "Abrindo Google Form (B2G)…";
+      window.location.href = url; // troca aba atual (menos bloqueio que popup)
     });
+  } else {
+    console.error("Não encontrei #validationForm no HTML.");
   }
 
-  // =========================
-  // FORM 2 — Feedback Explorer (o link que você mandou)
-  // =========================
+  // ===== FORM 2 (Feedback Explorer) =====
   const FEEDBACK_FORM_VIEW_URL =
     "https://docs.google.com/forms/d/e/1FAIpQLSf3EV_0LYt30X_teZbpl7lNFI71MY93BFxdxHCMe1jgOBP-JQ/viewform";
 
-  // Campo único do seu form:
-  // ...&entry.28047785=...
   const FEEDBACK_ENTRY = { msg: "entry.28047785" };
 
   const feedbackForm = document.getElementById("explorerFeedbackForm");
   const feedbackMsg = document.getElementById("feedbackMsg");
+
+  console.log("explorerFeedbackForm existe?", !!feedbackForm);
 
   function buildFeedbackUrl(payload) {
     const url = new URL(FEEDBACK_FORM_VIEW_URL);
@@ -114,29 +105,30 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (feedbackForm) {
-    feedbackForm.addEventListener("submit", async (e) => {
+    feedbackForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      const data = Object.fromEntries(new FormData(feedbackForm).entries());
+      console.log("SUBMIT FEEDBACK DISPAROU ✅");
 
+      const data = Object.fromEntries(new FormData(feedbackForm).entries());
       if (!data.fb_msg || String(data.fb_msg).trim() === "") {
         if (feedbackMsg) feedbackMsg.textContent = "Escreva seu feedback antes de enviar.";
         return;
       }
 
-      // Coloca contexto junto (pra você saber de quem veio quando abrir as respostas)
       const payload =
         "Feedback Explorer — Horizonte Afro\n" +
         "Nome: " + (data.fb_nome || "-") + "\n" +
         "E-mail: " + (data.fb_email || "-") + "\n\n" +
         String(data.fb_msg).trim();
 
-      if (feedbackMsg) feedbackMsg.textContent = "Abrindo Google Form de feedback (pré-preenchido)...";
-      await new Promise(r => setTimeout(r, 120));
+      const url = buildFeedbackUrl(payload);
+      console.log("URL Feedback:", url);
+      alert("Vou abrir este link:\n\n" + url);
 
-      window.open(buildFeedbackUrl(payload), "_blank", "noopener,noreferrer");
-
-      if (feedbackMsg) feedbackMsg.textContent = "Finalize o envio no Google Form que abriu na nova aba.";
-      feedbackForm.reset();
+      if (feedbackMsg) feedbackMsg.textContent = "Abrindo Google Form de feedback…";
+      window.location.href = url;
     });
+  } else {
+    console.error("Não encontrei #explorerFeedbackForm no HTML.");
   }
 });
