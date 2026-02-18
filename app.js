@@ -1,8 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("APP JS CARREGOU ✅");
+  // ===== Utils =====
+  const year = document.getElementById("year");
+  if (year) year.textContent = new Date().getFullYear();
 
-  // ===== FORM 1 (B2G) =====
-  const B2G_FORM_VIEW_URL =
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  function appendMany(params, key, value) {
+    if (value == null) return;
+
+    if (Array.isArray(value)) {
+      value.filter(Boolean).forEach((v) => params.append(key, String(v)));
+      return;
+    }
+
+    const s = String(value).trim();
+    if (!s) return;
+    params.append(key, s);
+  }
+
+  // ==========================================================
+  // FORM 1 — PILOTO B2G (link base + entries = os seus do exemplo)
+  // ==========================================================
+  const B2G_FORM_BASE =
     "https://docs.google.com/forms/d/e/1FAIpQLSf568b_tzt5jsOCEglAr_fnhPVIDeVOG6Fuy-l1i1E_t_M42w/viewform";
 
   const B2G_ENTRY = {
@@ -16,29 +35,16 @@ document.addEventListener("DOMContentLoaded", () => {
     whats: "entry.818163933",
     dor: "entry.962060619",
     piloto: "entry.498836888",
-    prioridade: "entry.442180220",
-    pagamento: "entry.1005602",
+    prioridade: "entry.442180220", // checkbox
+    pagamento: "entry.1005602",    // checkbox
     reuniao: "entry.329198512"
   };
 
   const validationForm = document.getElementById("validationForm");
   const formMsg = document.getElementById("formMsg");
 
-  console.log("validationForm existe?", !!validationForm);
-
-  function appendMany(params, key, value) {
-    if (value == null) return;
-    if (Array.isArray(value)) {
-      value.filter(Boolean).forEach(v => params.append(key, String(v)));
-      return;
-    }
-    const s = String(value).trim();
-    if (!s) return;
-    params.append(key, s);
-  }
-
   function buildB2GUrl(data) {
-    const url = new URL(B2G_FORM_VIEW_URL);
+    const url = new URL(B2G_FORM_BASE);
     url.searchParams.set("usp", "pp_url");
 
     appendMany(url.searchParams, B2G_ENTRY.nome, data.nome);
@@ -53,21 +59,27 @@ document.addEventListener("DOMContentLoaded", () => {
     appendMany(url.searchParams, B2G_ENTRY.piloto, data.piloto);
     appendMany(url.searchParams, B2G_ENTRY.reuniao, data.reuniao);
 
-    // checkboxes
-    (data.prioridade || []).forEach(v => url.searchParams.append(B2G_ENTRY.prioridade, v));
-    (data.pagamento || []).forEach(v => url.searchParams.append(B2G_ENTRY.pagamento, v));
+    // checkboxes (podem ser múltiplos)
+    appendMany(url.searchParams, B2G_ENTRY.prioridade, data.prioridade);
+    appendMany(url.searchParams, B2G_ENTRY.pagamento, data.pagamento);
 
     return url.toString();
   }
 
   if (validationForm) {
-    validationForm.addEventListener("submit", (e) => {
+    validationForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      console.log("SUBMIT B2G DISPAROU ✅");
 
       const raw = Object.fromEntries(new FormData(validationForm).entries());
-      const prioridadeChecks = [...validationForm.querySelectorAll('input[name="prioridade"]:checked')].map(i => i.value);
-      const pagamentoChecks = [...validationForm.querySelectorAll('input[name="pagamento"]:checked')].map(i => i.value);
+
+      // coletar checkboxes certinho
+      const prioridadeChecks = [
+        ...validationForm.querySelectorAll('input[name="prioridade"]:checked')
+      ].map((i) => i.value);
+
+      const pagamentoChecks = [
+        ...validationForm.querySelectorAll('input[name="pagamento"]:checked')
+      ].map((i) => i.value);
 
       const data = {
         ...raw,
@@ -75,41 +87,53 @@ document.addEventListener("DOMContentLoaded", () => {
         pagamento: pagamentoChecks
       };
 
-      const url = buildB2GUrl(data);
-      console.log("URL B2G:", url);
-      alert("Vou abrir este link:\n\n" + url);
+      // campos obrigatórios mínimos (ajusta se quiser)
+      const required = ["nome", "email", "orgao", "cargo", "uf", "municipio", "dor", "piloto", "reuniao"];
+      const missing = required.filter((k) => !data[k] || String(data[k]).trim() === "");
+      if (missing.length) {
+        if (formMsg) formMsg.textContent = "Preencha os campos obrigatórios antes de enviar.";
+        return;
+      }
 
-      if (formMsg) formMsg.textContent = "Abrindo Google Form (B2G)…";
-      window.location.href = url; // troca aba atual (menos bloqueio que popup)
+      const url = buildB2GUrl(data);
+
+      if (formMsg) formMsg.textContent = "Redirecionando para o Google Form (B2G)…";
+      await sleep(100);
+
+      // usa location.href pra evitar bloqueio de popup
+      try {
+        window.location.href = url;
+      } catch (err) {
+        // fallback: abre o form base
+        window.location.href = B2G_FORM_BASE + "?usp=pp_url";
+      }
     });
-  } else {
-    console.error("Não encontrei #validationForm no HTML.");
   }
 
-  // ===== FORM 2 (Feedback Explorer) =====
-  const FEEDBACK_FORM_VIEW_URL =
+  // ==========================================================
+  // FORM 2 — FEEDBACK EXPLORER (link base + entry = seu exemplo)
+  // ==========================================================
+  const FEEDBACK_FORM_BASE =
     "https://docs.google.com/forms/d/e/1FAIpQLSf3EV_0LYt30X_teZbpl7lNFI71MY93BFxdxHCMe1jgOBP-JQ/viewform";
 
-  const FEEDBACK_ENTRY = { msg: "entry.28047785" };
+  const FEEDBACK_ENTRY_MSG = "entry.28047785";
 
   const feedbackForm = document.getElementById("explorerFeedbackForm");
   const feedbackMsg = document.getElementById("feedbackMsg");
 
-  console.log("explorerFeedbackForm existe?", !!feedbackForm);
-
   function buildFeedbackUrl(payload) {
-    const url = new URL(FEEDBACK_FORM_VIEW_URL);
+    const url = new URL(FEEDBACK_FORM_BASE);
     url.searchParams.set("usp", "pp_url");
-    url.searchParams.set(FEEDBACK_ENTRY.msg, payload);
+    url.searchParams.set(FEEDBACK_ENTRY_MSG, payload);
     return url.toString();
   }
 
   if (feedbackForm) {
-    feedbackForm.addEventListener("submit", (e) => {
+    feedbackForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      console.log("SUBMIT FEEDBACK DISPAROU ✅");
 
       const data = Object.fromEntries(new FormData(feedbackForm).entries());
+
       if (!data.fb_msg || String(data.fb_msg).trim() === "") {
         if (feedbackMsg) feedbackMsg.textContent = "Escreva seu feedback antes de enviar.";
         return;
@@ -122,13 +146,15 @@ document.addEventListener("DOMContentLoaded", () => {
         String(data.fb_msg).trim();
 
       const url = buildFeedbackUrl(payload);
-      console.log("URL Feedback:", url);
-      alert("Vou abrir este link:\n\n" + url);
 
-      if (feedbackMsg) feedbackMsg.textContent = "Abrindo Google Form de feedback…";
-      window.location.href = url;
+      if (feedbackMsg) feedbackMsg.textContent = "Redirecionando para o Google Form de feedback…";
+      await sleep(100);
+
+      try {
+        window.location.href = url;
+      } catch (err) {
+        window.location.href = FEEDBACK_FORM_BASE + "?usp=pp_url";
+      }
     });
-  } else {
-    console.error("Não encontrei #explorerFeedbackForm no HTML.");
   }
 });
