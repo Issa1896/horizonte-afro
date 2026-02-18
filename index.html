@@ -1,322 +1,117 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Horizonte Afro | MVP</title>
-  <meta name="description" content="Microformações para docentes e trilhas AfroTech para jovens negros. Plataforma digital conectando escola e saberes quilombolas." />
-
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Horizonte Afro — Piloto para Secretarias e Redes</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial; margin:0; color:#111;}
+    .wrap{max-width:980px; margin:0 auto; padding:28px 18px;}
+    .hero{padding:38px 0 18px;}
+    h1{font-size:40px; line-height:1.1; margin:0 0 10px;}
+    p{line-height:1.55;}
+    .grid{display:grid; grid-template-columns:1fr; gap:14px;}
+    @media (min-width:860px){ .grid{grid-template-columns:1.15fr .85fr;} }
+    .card{border:1px solid #e6e6e6; border-radius:14px; padding:16px;}
+    .btn{display:inline-block; padding:12px 16px; border-radius:12px; text-decoration:none; border:1px solid #111; color:#111; margin-right:10px;}
+    .btn.primary{background:#111; color:#fff;}
+    .muted{color:#444;}
+    ul{padding-left:18px;}
+    .section{padding:18px 0;}
+    input,select,textarea{width:100%; padding:10px 12px; border-radius:10px; border:1px solid #ddd; margin:6px 0 12px;}
+    button{width:100%; padding:12px 14px; border-radius:12px; border:0; background:#111; color:#fff; font-size:16px;}
+    .tag{display:inline-block; font-size:12px; padding:6px 10px; border:1px solid #ddd; border-radius:999px; margin-right:6px;}
+  </style>
 </head>
-
 <body>
-<header>
   <div class="wrap">
-    <div class="nav">
-      <div class="brand">
-        <span class="dot" aria-hidden="true"></span>
-        <span>HORIZONTE AFRO</span>
+    <div class="hero grid">
+      <div>
+        <div class="muted">
+          <span class="tag">B2G</span>
+          <span class="tag">Lei 10.639/03</span>
+          <span class="tag">Educação + Comunidade + Tech</span>
+        </div>
+        <h1>Educação étnico-racial que sai do papel — com escola, comunidade quilombola e tecnologia no mesmo ecossistema.</h1>
+        <p class="muted">
+          A Horizonte Afro ajuda Secretarias e Redes a implementar a Lei 10.639/03 com microformações aplicáveis,
+          Saberes Quilombolas co-criados com a comunidade e trilhas AfroTech pra juventude transformar aprendizagem em oportunidade.
+        </p>
+        <ul>
+          <li>Microformações objetivas e aplicáveis para professores</li>
+          <li>Saberes Quilombolas: currículo vivo com protagonismo local</li>
+          <li>Trilhas AfroTech: programação + IA básica + empreendedorismo</li>
+        </ul>
+        <p>
+          <a class="btn primary" href="#piloto">Quero um piloto na minha rede (90 dias)</a>
+          <a class="btn" href="#como-funciona">Ver como funciona</a>
+        </p>
       </div>
 
-      <nav class="menu" aria-label="Navegação">
-        <a href="#sobre">Sobre</a>
-        <a href="#publico">Para quem</a>
-        <a href="#mvp">MVP</a>
-        <a href="#como-funciona">Como funciona</a>
-        <a href="#inscricao">Inscrição</a>
-        <a href="#faq">FAQ</a>
-      </nav>
-
-      <div class="ctaRow">
-        <a class="btn" href="#inscricao">Lista de espera</a>
-        <a class="btn primary" href="/login" id="loginLink">Acessar login</a>
+      <div class="card" id="piloto">
+        <h3 style="margin-top:0">Receber proposta do piloto</h3>
+        <p class="muted" style="margin-top:-6px">Preencha e retornamos com escopo, cronograma e custo estimado.</p>
+        <!-- Troque o action pelo teu Google Forms / Typeform -->
+        <form action="#" method="post">
+          <input placeholder="Nome e sobrenome" required />
+          <input placeholder="Secretaria/Rede" required />
+          <select required>
+            <option value="">UF</option>
+            <option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option>
+            <option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option>
+            <option>MT</option><option>MS</option><option>MG</option><option>PA</option><option>PB</option>
+            <option>PR</option><option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+            <option>RS</option><option>RO</option><option>RR</option><option>SC</option><option>SP</option>
+            <option>SE</option><option>TO</option>
+          </select>
+          <input placeholder="Cargo/Função" required />
+          <input placeholder="E-mail" type="email" required />
+          <input placeholder="WhatsApp" required />
+          <input placeholder="Nº aproximado de escolas (opcional)" />
+          <textarea rows="3" placeholder="O que você mais quer resolver agora na sua rede? (opcional)"></textarea>
+          <button type="submit">Enviar</button>
+        </form>
       </div>
     </div>
-  </div>
-</header>
 
-<main>
-  <div class="wrap">
-    <section class="hero" aria-label="Introdução">
-      <div class="gridHero">
-        <div class="panel">
-          <h1>Educação étnico-racial aplicável, saberes quilombolas vivos e trilhas AfroTech.</h1>
-          <p class="sub">
-            Microformações práticas para docentes (Lei 10.639/03 sem enrolação) e trilhas de tecnologia para jovens negros,
-            conectando escola e comunidade em um único ecossistema.
-          </p>
-
-          <div class="badges" aria-label="Destaques do MVP">
-            <span class="badge">Cursos (vídeo + texto)</span>
-            <span class="badge">Login professor/jovem</span>
-            <span class="badge">Certificado simples</span>
-            <span class="badge">Feedback</span>
-            <span class="badge">Admin (CRUD)</span>
-          </div>
-
-          <div class="heroActions">
-            <a class="btn primary" href="#inscricao">Quero participar do piloto</a>
-            <a class="btn" href="#mvp">Ver o que entra no MVP</a>
-          </div>
-
-          <p class="formNote">
-          Ao enviar, você será redirecionado para um Google Form para finalizar a inscrição (é assim que coletamos as respostas sem custo no MVP).
-          </p>
-
-        </div>
-
-        <aside class="panel" aria-label="Resumo rápido">
-          <div class="kpis">
-            <div class="kpi">
-              <strong>Para professores</strong>
-              <span>Microformações curtas, aplicáveis e seguras para sala de aula.</span>
-            </div>
-            <div class="kpi">
-              <strong>Para jovens negros</strong>
-              <span>Trilhas iniciais de tecnologia com orientação prática.</span>
-            </div>
-            <div class="kpi">
-              <strong>Com saberes quilombolas</strong>
-              <span>Conteúdo produzido com e pelas comunidades, com respeito e autoria.</span>
-            </div>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <section id="sobre" known aria-label="Sobre o projeto">
-      <div class="sectionTitle">
-        <h2>O que é o Horizonte Afro</h2>
-        <span class="hint">Um MVP para validar adesão, impacto e operação.</span>
-      </div>
-
-      <div class="cols2">
-        <div class="card">
-          <h3>Problema real</h3>
-          <p>
-            Muitos docentes não recebem formação prática sobre a Lei 10.639/03. Ao mesmo tempo, jovens negros seguem com
-            acesso limitado a oportunidades no campo da tecnologia.
-          </p>
-          <ul>
-            <li>Currículos superficiais e pontuais (só em datas simbólicas)</li>
-            <li>Baixa conexão escola-comunidade</li>
-            <li>Desigualdade de acesso a repertório e oportunidades</li>
-          </ul>
-        </div>
-
-        <div class="card">
-          <h3>Proposta objetiva</h3>
-          <p>
-            Uma plataforma digital integrada que conecta docentes, comunidades quilombolas e jovens negros em trilhas de aprendizagem.
-          </p>
-          <ul>
-            <li>Microformações rápidas e aplicáveis</li>
-            <li>Espaço de saberes quilombolas com autoria</li>
-            <li>Trilhas AfroTech com certificação simples</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section id="publico" aria-label="Público-alvo">
-      <div class="sectionTitle">
-        <h2>Para quem</h2>
-        <!-- <span class="hint">Dois perfis no login do MVP.</span> -->
-      </div>
-
-      <div class="cols2">
-        <div class="card">
-          <h3>Professores</h3>
-          <p>Formação continuada prática, com materiais prontos para adaptar e aplicar.</p>
-          <ul>
-            <li>Aulas curtas com exemplos</li>
-            <li>Plano de aula e referências</li>
-            <li>Certificado simples de conclusão</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Jovens negros</h3>
-          <p>Trilhas de tecnologia para iniciar com base e direção (sem “meme motivacional”).</p>
-          <ul>
-            <li>Conteúdo introdutório e progressivo</li>
-            <li>Prática guiada</li>
-            <li>Registro de progresso e certificado</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section id="mvp" aria-label="Escopo do MVP">
-      <div class="sectionTitle">
-        <h2>O que entra no MVP</h2>
-        <span class="hint">Escopo mínimo. Sem invenção.</span>
-      </div>
-
-      <!-- <div class="split">
-        <div class="card">
-          <span class="tagOk">Obrigatórias</span>
-          <ul class="listOk">
-            <li>Página institucional do projeto</li>
-            <li>Login (professor / jovem)</li>
-            <li>Área de cursos (vídeo + texto)</li>
-            <li>Emissão de certificado simples</li>
-            <li>Formulário de feedback</li>
-            <li>Painel administrativo básico (CRUD de conteúdos)</li>
-          </ul>
-        </div>
-
-        <div class="card">
-          <span class="tagNo">Não obrigatórias no MVP</span>
-          <ul class="listNo">
-            <li>App mobile</li>
-            <li>IA personalizada</li>
-            <li>Fórum / comunidade em tempo real</li>
-            <li>Gamificação avançada</li>
-          </ul>
-          <p class="formNote">
-            Essas coisas consomem tempo e dinheiro sem validar impacto no início.
-          </p>
-        </div>
-      </div>
-    </section> -->
-
-    <section id="como-funciona" aria-label="Como funciona">
-      <div class="sectionTitle">
-        <h2>Como funciona (simples)</h2>
-        <span class="hint">Três passos. Sem mistério.</span>
-      </div>
-
-      <div class="steps">
-        <div class="card">
-          <div class="stepNum">1</div>
-          <h3>Cadastro e perfil</h3>
-          <p>Professor ou jovem. A plataforma entrega trilhas e conteúdos conforme o perfil.</p>
-        </div>
-        <div class="card">
-          <div class="stepNum">2</div>
-          <h3>Cursos (vídeo + texto)</h3>
-          <p>Vídeos hospedados externamente (YouTube privado/não listado) + material complementar.</p>
-        </div>
-        <div class="card">
-          <div class="stepNum">3</div>
-          <h3>Conclusão e certificado</h3>
-          <p>Certificado simples e feedback para melhorar o que realmente importa no MVP.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="inscricao" aria-label="Inscrição">
-      <div class="sectionTitle">
-        <h2>Entrar na lista de espera / piloto</h2>
-        <span class="hint">Captura de interesse. Depois você integra no backend.</span>
-      </div>
-
-      <div class="cols2">
-        <div class="card">
-          <h3>Quero participar</h3>
-          <p>Preencha e a equipe entra em contato quando abrir o piloto.</p>
-
-          <form id="leadForm">
-            <div class="row2">
-              <div>
-                <label for="nome">Nome</label>
-                <input id="nome" name="nome" placeholder="Seu nome" required />
-              </div>
-              <div>
-                <label for="email">E-mail</label>
-                <input id="email" name="email" type="email" placeholder="voce@exemplo.com" required />
-              </div>
-            </div>
-
-            <div class="row2">
-              <div>
-                <label for="perfil">Perfil</label>
-                <select id="perfil" name="perfil" required>
-                  <option value="" selected disabled>Selecione</option>
-                  <option value="professor">Professor(a)</option>
-                  <option value="jovem">Jovem</option>
-                  <option value="comunidade">Comunidade quilombola</option>
-                  <option value="parceiro">Parceiro / instituição</option>
-                </select>
-              </div>
-              <div>
-                <label for="cidade">Cidade/UF</label>
-                <input id="cidade" name="cidade" placeholder="Ex.: Fortaleza/CE" />
-              </div>
-            </div>
-
-            <div>
-              <label for="mensagem">Mensagem (opcional)</label>
-              <textarea id="mensagem" name="mensagem" placeholder="Conte rapidinho como você quer participar."></textarea>
-            </div>
-
-            <button class="btn primary" type="submit">Enviar interesse</button>
-            <div class="msg" id="formMsg" role="status" aria-live="polite"></div>
-            <!-- <p class="formNote">
-              No MVP, isso pode gravar no banco ou enviar para um e-mail. Aqui no HTML está como “simulação”.
-            </p>
-          </form>
-        </div>
-
-        <div class="card">
-          <h3>Tecnologia (pragmática)</h3>
-          <ul>
-            <li><strong>Frontend:</strong> HTML + CSS + JS (ou React, se já dominarem)</li>
-            <li><strong>Backend:</strong> Django ou Laravel</li>
-            <li><strong>Banco:</strong> PostgreSQL ou SQLite (fase inicial)</li>
-            <li><strong>Hospedagem:</strong> VPS simples ou serviço educacional</li>
-            <li><strong>Vídeos:</strong> hospedados externamente (YouTube privado ou similar)</li>
-          </ul>
-        </div>
-      </div>
-    </section>-->
-
-    <section id="faq" aria-label="Perguntas frequentes">
-      <div class="sectionTitle">
-        <h2>FAQ</h2>
-        <span class="hint">Perguntas que evitam 40 DMs.</span>
-      </div>
-
-      <div class="cols2">
-        <details>
-          <summary>O que exatamente eu vou acessar no MVP?</summary>
-          <p>Login por perfil, cursos (vídeo+texto), certificado simples e formulário de feedback.</p>
-        </details>
-        <details>
-          <summary>Precisa baixar app?</summary>
-          <p>Não. MVP é web. App só depois de validar uso e valor.</p>
-        </details>
-        <details>
-          <summary>Tem comunidade / fórum?</summary>
-          <p>Não no MVP. Primeiro validamos adesão e qualidade do conteúdo; depois se pensa em social.</p>
-        </details>
-        <details>
-          <summary>Os vídeos ficam hospedados onde?</summary>
-          <p>Externamente (ex.: YouTube privado/não listado) para reduzir custo e complexidade.</p>
-        </details>
-        <details>
-          <summary>Como entra conteúdo de saberes quilombolas?</summary>
-          <p>Via curadoria e publicação no admin (CRUD) com autoria definida e consentimento.</p>
-        </details>
-        <details>
-          <summary>O certificado tem validade?</summary>
-          <p>No MVP, é certificado simples de conclusão. Validade formal depende de parcerias e regulamentação.</p>
-        </details>
-      </div>
-    </section>
-  </div>
-</main>
-
-<footer>
-  <div class="wrap">
-    <div class="footerRow">
-      <div>© <span id="year"></span> Horizonte Afro — MVP</div>
-      <div>Contato: <a href="mailto:contato@horizonteafro.org">contato@horizonteafro.org</a></div>
+    <div class="section card">
+      <h2 style="margin-top:0">O problema</h2>
+      <ul>
+        <li>Formação insuficiente e pouco prática para aplicação contínua da Lei 10.639/03</li>
+        <li>Baixa conexão entre escola e comunidades quilombolas (saberes invisibilizados)</li>
+        <li>Juventude negra e quilombola com acesso limitado a tecnologia e oportunidades</li>
+      </ul>
     </div>
-  </div>
-</footer>
 
-<script src="app.js" defer></script>
+    <div class="section" id="como-funciona">
+      <h2>Como funciona o piloto (90 dias)</h2>
+      <div class="grid">
+        <div class="card">
+          <h3 style="margin-top:0">Entrega no chão da escola</h3>
+          <ul>
+            <li>Microformações + planos de aula e materiais aplicáveis</li>
+            <li>Conteúdos e vivências com Saberes Quilombolas</li>
+            <li>Trilhas AfroTech para juventude</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0">Entrega para gestão</h3>
+          <ul>
+            <li>Indicadores e evidências do piloto</li>
+            <li>Relatório final + recomendações de escala</li>
+            <li>Roteiro de continuidade por bimestre</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="section card">
+      <h2 style="margin-top:0">Alinhamento e impacto</h2>
+      <p class="muted">ODS 4 (Educação de Qualidade), 8 (Trabalho Decente), 10 (Redução das Desigualdades) e 11 (Cidades e Comunidades Sustentáveis).</p>
+      <p><a class="btn primary" href="#piloto">Quero um piloto na minha rede</a></p>
+    </div>
+
+    <p class="muted" style="text-align:center; padding:16px 0;">Horizonte Afro ©</p>
+  </div>
 </body>
 </html>
-
