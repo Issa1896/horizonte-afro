@@ -159,11 +159,6 @@ h2{ margin:0; font-size: 22px; letter-spacing: -0.2px; }
 ul{ margin: 0; padding-left: 18px; color: var(--muted); }
 li{ margin: 6px 0; }
 
-.split{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
 .tagOk{
   display:inline-block;
   font-size: 12px;
@@ -174,32 +169,7 @@ li{ margin: 6px 0; }
   color: rgba(233,240,248,.86);
   margin-bottom: 10px;
 }
-.tagNo{
-  display:inline-block;
-  font-size: 12px;
-  border: 1px solid rgba(239,68,68,.35);
-  background: rgba(239,68,68,.10);
-  padding: 4px 8px;
-  border-radius: 999px;
-  color: rgba(233,240,248,.86);
-  margin-bottom: 10px;
-}
 .formNote{ color: var(--muted); font-size: 12px; margin-top: 6px; }
-
-/* Steps */
-.steps{
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-}
-.stepNum{
-  width: 30px; height: 30px; border-radius: 10px;
-  display:flex; align-items:center; justify-content:center;
-  background: rgba(245,197,66,.15);
-  border: 1px solid rgba(245,197,66,.25);
-  font-weight: 700;
-  margin-bottom: 10px;
-}
 
 /* Form */
 form{ display:grid; gap: 10px; }
@@ -214,25 +184,37 @@ input, select, textarea{
   color: var(--text);
   outline: none;
 }
-textarea{ min-height: 100px; resize: vertical; }
+textarea{ min-height: 120px; resize: vertical; }
 .msg{
   margin-top: 10px;
   font-size: 13px;
   color: rgba(233,240,248,.86);
 }
 
-/* FAQ */
-details{
+/* ✅ upgrade: Checkbox groups */
+.checkgroup{
+  display:grid;
+  gap: 8px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+.checkgroup label{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  padding: 10px 12px;
   border: 1px solid var(--line);
   border-radius: 12px;
-  padding: 12px 14px;
   background: rgba(255,255,255,.03);
+  cursor:pointer;
+  user-select:none;
 }
-details summary{
-  cursor: pointer;
-  font-weight: 600;
+.checkgroup label:hover{ background: rgba(255,255,255,.06); }
+.checkgroup input[type="checkbox"]{
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
 }
-details p{ margin: 10px 0 0; color: var(--muted); font-size: 14px; }
 
 /* Footer */
 footer{
@@ -247,13 +229,28 @@ footer{
 @media (max-width: 900px){
   .gridHero{ grid-template-columns: 1fr; }
   .cols2{ grid-template-columns: 1fr; }
-  .split{ grid-template-columns: 1fr; }
-  .steps{ grid-template-columns: 1fr; }
   h1{ font-size: 32px; }
 }
 
-textarea { min-height: 120px; }
-button.btn.primary { width: 100%; justify-content: center; }
-
-
-
+/* ✅ upgrade: botão com cara de .btn */
+button.btn{
+  border: 1px solid var(--line);
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap: 8px;
+  cursor: pointer;
+  background: rgba(255,255,255,.04);
+  color: var(--text);
+  width: 100%;
+}
+button.btn:hover{ background: rgba(255,255,255,.07); }
+button.btn.primary{
+  border-color: rgba(245,197,66,.35);
+  background: rgba(245,197,66,.12);
+}
+button.btn.primary:hover{ background: rgba(245,197,66,.18); }
