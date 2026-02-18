@@ -251,3 +251,8 @@ footer{
   .steps{ grid-template-columns: 1fr; }
   h1{ font-size: 32px; }
 }
+
+textarea { min-height: 120px; }
+button.btn.primary { width: 100%; justify-content: center; }
+
+
